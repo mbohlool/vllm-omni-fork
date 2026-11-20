@@ -31,6 +31,13 @@ class XPUOmniPlatform(OmniPlatform, XPUPlatform):
         apply_patches()
 
     @classmethod
+    def supports_device_tensor_ipc(cls) -> bool:
+        # Pickling an XPU tensor already copies it to the host; keeping the
+        # device would make the receiving process create its own Level Zero
+        # context just to rebuild it on xpu:0.
+        return False
+
+    @classmethod
     def get_omni_ar_worker_cls(cls) -> str:
         return "vllm_omni.platforms.xpu.worker.xpu_ar_worker.XPUARWorker"
 

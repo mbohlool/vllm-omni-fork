@@ -158,6 +158,11 @@ class TestSmallDeviceTensorIpcFlag:
     def test_flag_defaults_to_true(self):
         assert OmniPlatform.supports_device_tensor_ipc() is True
 
+    def test_xpu_opts_out(self):
+        from vllm_omni.platforms.xpu.platform import XPUOmniPlatform
+
+        assert XPUOmniPlatform.supports_device_tensor_ipc() is False
+
     @pytest.mark.parametrize("flag", [True, False])
     def test_small_cpu_tensor_returned_unchanged(self, set_device_tensor_ipc, flag):
         set_device_tensor_ipc(flag)
